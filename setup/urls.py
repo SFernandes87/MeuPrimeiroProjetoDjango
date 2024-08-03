@@ -15,16 +15,25 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import include, path
 
 from saf.views import home
 from saf.views import safListarView  #Class Based Views
 from saf.views import safCriarView
+from saf.views import safAtualizarView
+from saf.views import safDeletarView
 
 urlpatterns = [
     path("admin/", admin.site.urls),
     # path("", home),
     #path("", safListar),
-    path("", safListarView.as_view(template_name="saf/saflistar.html")),
-    path("criar", safCriarView.as_view(), name='saf_criar')   
+    path("", safListarView.as_view(template_name="saf/saflistar.html"), name='saf_listar'),
+    path("criar", safCriarView.as_view(), name='saf_criar'),     
+    # pk é o parametro da tarefa que será atualizada
+    path("atualizar/<int:pk>", safAtualizarView.as_view(), name='saf_atualizar'),
+    # url de debug do django debug toolbars
+    path("__debug__/", include("debug_toolbar.urls")),
+    path("excluir/<int:pk>", safDeletarView.as_view(), name='saf_excluir'),
+
+    
 ]

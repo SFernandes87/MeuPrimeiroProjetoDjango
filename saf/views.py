@@ -1,7 +1,8 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from .models import saf
-from django.views.generic import ListView, CreateView
+from django.views.generic import ListView, CreateView, UpdateView, DeleteView
+
 from django.urls import reverse_lazy
 
 # Create your views here.
@@ -30,3 +31,23 @@ class safCriarView(CreateView):
     model = saf
     fields = ["titulo","dtFinalizado"]  # Uma lista de campos que o usuario pode alterar
     success_url = reverse_lazy('saf_listar')
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['titulo_pagina'] = 'Adicionar Tarefa'
+        return context
+
+
+class safAtualizarView(UpdateView):
+    model = saf
+    fields = ["titulo","dtFinalizado"]  # Uma lista de campos que o usuario pode alterar
+    success_url = reverse_lazy('saf_listar')
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['titulo_pagina'] = 'Atualizar Tarefa'
+        return context
+class safDeletarView(DeleteView):
+    model = saf
+    success_url = reverse_lazy('saf_listar')
+    template_name = "saf/saf_confirm_delete.html"
