@@ -1,60 +1,48 @@
 {% extends 'padrao.html' %}
 
-
 {% block titulo %}
   Listagem de tarefas
 {% endblock %}
-
 
 {% block subtitulo %}
   Listagem de tarefas
 {% endblock %}
 
-
 {% block conteudo %}
-      {% comment %} Inicio botao de criacao de tarefa {% endcomment %}
-      <a href="{% url 'saf_criar' %}"
-         type="button" class="btn btn-success">Nova Tarefa</a>
-      {% comment %} Fim botao de criacao de tarefa {% endcomment %}
+  {% comment %}Inicio botao de criacao de tarefa{% endcomment %}
+  <a href="{% url 'saf_criar' %}" type="button" class="btn btn-success">Nova Tarefa</a>
+  {% comment %}Fim botao de criacao de tarefa{% endcomment %}
 
+  {% comment %}Inicio da tabela{% endcomment %}
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Titulo</th>
+        <th scope="col">Criação</th>
+        <th scope="col">Finalizacao</th>
+        <th scope="col">Ações</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for tarefa in saf_list %}
+        <tr>
+          <th scope="row">{{ tarefa.id }}</th>
+          <td>{{ tarefa.titulo }}</td>
+          <td>{{ tarefa.dtCriacao|date:'SHORT_DATE_FORMAT' }}</td>
+          <td>{{ tarefa.dtFinalizacao|date:'SHORT_DATE_FORMAT'|default:'-' }}</td>
 
-      {% comment %}Inicio da tabela{% endcomment %}
-      <table class="table">
-        <thead>
-          <tr>
-            <th scope="col">#</th>
-            <th scope="col">Titulo</th>
-            <th scope="col">Criação</th>
-            <th scope="col">Finalizacao</th>
-            <th scope="col">Ações</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for tarefa in saf_list %}
-            <tr>
-              <th scope="row">{{ tarefa.id }}</th>
-              <td>{{ tarefa.titulo }}</td>
-              <td>{{ tarefa.dtCriacao|date:'SHORT_DATE_FORMAT' }}</td>
-              <td>{{ tarefa.dtFinalizacao|date:'SHORT_DATE_FORMAT'|default:'-' }}</td>
-    
-    
-              {% comment %}botoes de acoes{% endcomment %}
-              <td>
-                <div class="btn-group" role="group" aria-label="Basic mixed styles example">
-                  <button type="button"
-                          onclick="window.location.href='{% url 'saf_atualizar' pk=tarefa.pk %}'"
-                          class="btn btn-warning">Editar</button>
-                 
-                  <button type="button"
-                          onclick="window.location.href='{% url 'saf_excluir' pk=tarefa.pk %}'"
-                          class="btn btn-danger">Excluir</button>
-                </div>
-              </td>
-            </tr>
-          {% endfor %}
-        </tbody>
-      </table>
-      {% comment %}fim da tabela{% endcomment %}
-{% endblock%}
+          {% comment %}botoes de acoes{% endcomment %}
+          <td>
+            <div class="btn-group" role="group" aria-label="Basic mixed styles example">
+              <button type="button" onclick="window.location.href='{% url 'saf_atualizar' pk=tarefa.pk %}'" class="btn btn-warning">Editar</button>
 
-
+              <button type="button" onclick="window.location.href='{% url 'saf_excluir' pk=tarefa.pk %}'" class="btn btn-danger">Excluir</button>
+            </div>
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% comment %}fim da tabela{% endcomment %}
+{% endblock %}
